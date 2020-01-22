@@ -38,6 +38,7 @@ INSTALLED_APPS = [
 
     'leads',
     'rest_framework',
+    'frontend',
 ]
 
 MIDDLEWARE = [
