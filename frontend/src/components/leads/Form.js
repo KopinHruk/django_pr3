@@ -1,13 +1,56 @@
-import React from 'react'
+import React from 'react';
+import {connect} from 'react-redux';
+import PropTypes from 'prop-types';
+import {addLead} from '../../actions/leads';
 
 export class Form extends React.Component {
+	state = {
+		name: '',
+		email: '',
+		message: '',
+	};
+	static propTypes = {
+		addLead: PropTypes.func.isRequired,
+	};
+
+	onChange = e => this.setState({ [e.target.name]: e.target.value });
+
+	onSubmit = e => {
+		e.preventDefault();
+		const { name, email, message } = this.state;
+		const lead = { name, email, message};
+		this.props.addLead(lead);
+		this.setState({
+			name: '',
+			email: '',
+			message: '',
+		})
+	};
+
 	render() {
+		const {name, email, message} = this.state;
 		return (
 			<div>
-				<h1>Add Lead Form</h1>
+				<form onSubmit={this.onSubmit}>
+					<div>
+						<label>Name</label>
+						<input type="text" name="name" onChange={this.onChange} value={name}/>
+					</div>
+					<div>
+						<label>Email</label>
+						<input type="email" name="email" onChange={this.onChange} value={email}/>
+					</div>
+					<div>
+						<label>Message</label>
+						<input type="text" name="message" onChange={this.onChange} value={message}/>
+					</div>
+					<div>
+						<button type='submit'>submit</button>
+					</div>
+				</form>
 			</div>
 		)
 	}
 }
 
-export default Form
+export default connect(null, {addLead})(Form);
